@@ -1,0 +1,67 @@
+.fs-ajax-loading {
+	background-image: url(../images/ajax-loader.gif);
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	height: 32px;
+	padding-left: 40px;
+	line-height: 34px;
+	z-index: 10000000000;
+}
+
+.fs-ajax-haze {
+	position: absolute;
+	top: -800px;
+	left: -800px;
+	width: 8000px;
+	height: 4000px;
+	z-index: 10;
+	background-color: black;
+	opacity: 0.5;
+	display: none;
+}
+
+.fs-description {
+	font-size: 9px;
+	color: #555;
+}
+
+.user-query {
+	height: 80px;
+	width: 300px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	font-family: Courier, Courier New, Monospace;
+	font-size: 11px;
+}
+
+.fs-mainpanel,
+.userexport-content {
+	border: 1px solid red !important;
+}
+
+.fs-table {
+	border-collapse: collapse;
+}
+
+.fs-table td {
+	border: 1px solid #CCC;
+	padding: 5px;
+	vertical-align: top;
+}
+
+.fs-table .fs-key {
+	width: 150px;
+	font-weight: bold;
+}
+
+.fs-help-text {
+	line-height: 35px;
+	font-size: 10px;
+	color: #555;
+	margin-left: 10px;
+}
+
+.fs-help-text b {
+	border-bottom: 1px dotted #666;
+}

@@ -1,0 +1,6 @@
+# ignore all .htaccess
+.htaccess
+
+# ignore setup config files
+build.config.php
+build/build.config.php

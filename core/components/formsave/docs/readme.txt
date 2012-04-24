@@ -1,0 +1,1 @@
+Install the package through the MODX Repo and check the RTFM for usage.
