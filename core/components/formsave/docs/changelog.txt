@@ -1,1 +1,6 @@
-1.0: Initial Version
+Version 1.0.1:
+- Added ability to delete forms
+- Fixed a bug that disabled users from viewing forms
+
+Version 1.0.0:
+Initial Version

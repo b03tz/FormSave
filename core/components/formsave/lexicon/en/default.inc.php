@@ -59,3 +59,7 @@ $_lang['formsave.help_xml'] = 'Export the data to XML <b>(should only be used fo
 $_lang['formsave.help_html'] = 'Export the data to a printable HTML file';
 $_lang['formsave.form_time'] = 'Time';
 $_lang['formsave.about'] = 'About / Upgrade';
+$_lang['formsave.ajax_loading'] = 'Loading...';
+$_lang['formsave.delete'] = 'Delete';
+$_lang['formsave.delete_confirm_msg'] = 'Are you sure that you want to delete this form entry?';
+$_lang['formsave.delete_confirm_title'] = 'Delete form entry';

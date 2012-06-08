@@ -59,3 +59,7 @@ $_lang['formsave.help_xml'] = 'Exporteer gegevens naar XML (<b>te gebruiken voor
 $_lang['formsave.help_html'] = 'Exporteer gegevens naar een printbaar bestand';
 $_lang['formsave.form_time'] = 'Tijd';
 $_lang['formsave.about'] = 'Over FormSave / Upgrade';
+$_lang['formsave.ajax_loading'] = 'Laden...';
+$_lang['formsave.delete'] = 'Verwijderen';
+$_lang['formsave.delete_confirm_msg'] = 'Weet u zeker dat u dit ingevulde formulier wilt verwijderen?';
+$_lang['formsave.delete_confirm_title'] = 'Ingevuld formulier verwijderen';

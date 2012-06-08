@@ -57,7 +57,7 @@ foreach ($forms as $form) {
 	
 	$introText = '';
 	foreach($addArray['data'] as $dataKey => $dataValue) {
-		if (strlen($introText < 100)) {
+		if (strlen($introText) < 100) {
 			$introText .= '<b>'.$dataKey.'</b>: '.strip_tags($dataValue).'.&nbsp;&nbsp;';
 		} else {
 			break;

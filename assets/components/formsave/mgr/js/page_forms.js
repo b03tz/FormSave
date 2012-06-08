@@ -49,6 +49,38 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 								});
 							}	
 						}	
+					} 
+				},
+				{
+					text: _('formsave.delete'),
+					listeners: {
+						click: {
+							scope: this,
+							fn: function() {
+								Ext.Msg.show({
+									title: _('formsave.delete_confirm_title'),
+									msg: _('formsave.delete_confirm_msg'),
+									buttons: Ext.Msg.YESNO,
+									fn: function(response) {
+										if (response == 'yes') {
+											fsCore.ajax.request({
+												url: fsCore.config.connectorUrl,
+												params: {
+													id: this.rowMenu.baseParams.rowId,
+													action: 'mgr/form/delete'
+												},
+												scope: this,
+												success: function(response) {
+													fsCore.stores.forms.load();
+												}
+											});
+										}
+									},
+									icon: Ext.MessageBox.QUESTION,
+									scope: this
+								});
+							}	
+						}	
 					}
 				}
 			]
