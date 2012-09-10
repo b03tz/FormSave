@@ -8,6 +8,9 @@ $formArray = $form->toArray();
 
 $output = '';
 foreach($formArray['data'] as $key => $value) {
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
 	$output .= $formSave->getChunk('fs.datarow', array(
 		'key' => $key,
 		'value' => $value
