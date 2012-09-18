@@ -28,6 +28,8 @@ if ($formFields === false) {
 	$values = $hook->getValues();
 	foreach($formFields as $field) {
 		if (!isset($values[$field])) {
+			// Add empty field
+			$dataArray[$field] = '';
 			continue;
 		}
 		

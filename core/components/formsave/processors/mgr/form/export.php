@@ -90,10 +90,13 @@ foreach ($forms as $form) {
 		}
 		
 		$separatorAdded = false;
-
+		if (is_array($value)) {
+			$value = implode(',', $value);
+		}
+		
 		$rowOutput .=  $formSave->getChunk('fs.rowdata', array(
 			'key' => str_replace($templateConfig['replaceInput'], $templateConfig['replaceOutput'], $key),
-			'value' => str_replace($templateConfig['replaceInput'], $templateConfig['replaceOutput'], $value),
+			'value' => str_replace($templateConfig['replaceInput'], $templateConfig['replaceOutput'], html_entity_decode($value)),
 			'formData' => $formData
 		));
 		
