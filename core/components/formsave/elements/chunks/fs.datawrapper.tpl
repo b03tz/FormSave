@@ -1,5 +1,5 @@
 <h2>[[%formsave.form]] [[+topic:ucfirst]]</h2>
-
+ 
 <b>[[%formsave.ip]]</b>: [[+ip]]<br />
 <b>[[%formsave.date]]</b>: [[%formsave.dateformat?
   &d=`[[+time:date=`%d`]]`
