@@ -8,6 +8,7 @@ $formit =& $hook->formit;
 $formValues = $hook->getValues();
 $formTopic = $modx->getOption('fsFormTopic', $formit->config, 'form');
 $formFields = $modx->getOption('fsFormFields', $formit->config, false);
+$fsFormFieldNames = $modx->getOption('fsFormFieldNames', $formit->config, false);
 $formPublished = (int) $modx->getOption('fsFormPublished', $formit->config, 1);
 
 if ($formFields !== false) {
@@ -35,6 +36,25 @@ if ($formFields === false) {
 		
 		$dataArray[$field] = $values[$field];
 	}
+}
+
+//Change the fieldnames
+if($fsFormFieldNames){
+	$newDataArray = array();
+	$fieldLabels = array();
+	$formFieldNames = explode(',', $fsFormFieldNames);
+	foreach($formFieldNames as $formFieldName){
+		list($name, $label) = explode('==', $formFieldName);
+		$fieldLabels[trim($name)] = trim($label);
+	}
+	foreach ($dataArray as $key => $value) {
+		if($fieldLabels[$key]){
+			$newDataArray[$fieldLabels[$key]] = $value;
+		}else{
+			$newDataArray[$key] = $value;
+		}
+	}
+	$dataArray = $newDataArray;
 }
 
 // Fill the database object
