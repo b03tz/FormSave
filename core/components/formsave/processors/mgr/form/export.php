@@ -73,7 +73,13 @@ $forms = $modx->getCollection('fsForm', $query);
 $output = '';
 
 foreach ($forms as $form) {
-	$formData = array_merge($form->toArray(), $form->get('data'));
+	
+	$formData = $form->toArray();
+	// "time" field renamed to unique "timeFormSave" name to eliminate conflict beetween previous "time" name and "time" field inj saved forms
+	$formData['timeFormSave'] = $formData['time'];
+  	unset($formData['time']);
+  	$formData = array_merge($formData, $form->get('data'));
+
 	$rowOutput = '';
 	$count = 0;
 	foreach($formData as $key => $value) {
