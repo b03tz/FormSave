@@ -7,6 +7,16 @@ if (!($formSave instanceof FormSave)) return '';
 $formit =& $hook->formit;
 $formValues = $hook->getValues();
 $formTopic = $modx->getOption('fsFormTopic', $formit->config, 'form');
+// process formTopic. Pick a value from the form
+// Inspired from the email's hook of formit (fihooks.class.php)
+if (is_string($formTopic)) {
+    foreach ($fields as $k => $v) {
+        if (is_scalar($k) && is_scalar($v)) {
+            $formTopic = str_replace('[[+'.$k.']]',$v,$formTopic);
+        }
+    }
+}
+
 $formFields = $modx->getOption('fsFormFields', $formit->config, false);
 $formPublished = (int) $modx->getOption('fsFormPublished', $formit->config, 1);
 
