@@ -26,6 +26,11 @@
 	color: #555;
 }
 
+#formsave-content {
+ max-height: 800px !important;
+ overflow-y: auto;
+}
+
 .user-query {
 	height: 80px;
 	width: 300px;
