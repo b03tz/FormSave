@@ -28,6 +28,7 @@
 
 #formsave-content {
  max-height: 800px !important;
+ overflow-y: auto;
 }
 
 .user-query {
