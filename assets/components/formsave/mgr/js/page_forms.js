@@ -22,7 +22,7 @@
  */
  
 var fsPageStores = Ext.extend(Ext.Panel, {
-	initComponent: function() {		
+	initComponent: function() {
 		// Rightclick mouse menu for the grid
 		this.rowMenu = new Ext.menu.Menu({
 			baseParams: {
@@ -47,9 +47,9 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 										Ext.getCmp('form-data-view').update(response.responseText);
 									}
 								});
-							}	
-						}	
-					} 
+							}
+						}
+					}
 				},
 				{
 					text: _('formsave.delete'),
@@ -79,8 +79,8 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 									icon: Ext.MessageBox.QUESTION,
 									scope: this
 								});
-							}	
-						}	
+							}
+						}
 					}
 				}
 			]
@@ -110,52 +110,52 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 			}),
 			loadMask: true,
 			enableDragDrop: true,
-		    autoExpandColumn: 'form-data',
-		    columns: [
+			autoExpandColumn: 'form-data',
+			columns: [
 				{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'id',
-		            header: _('formsave.form_id'),
+					xtype: 'gridcolumn',
+					dataIndex: 'id',
+					header: _('formsave.form_id'),
 					width: 100
-		        },
+				},
 				{
-		            xtype: 'gridcolumn', 
-		            dataIndex: 'topic',
-		            header: _('formsave.form_topic')
-		        },
+					xtype: 'gridcolumn', 
+					dataIndex: 'topic',
+					header: _('formsave.form_topic')
+				},
 				{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'data_intro',
+					xtype: 'gridcolumn',
+					dataIndex: 'data_intro',
 					id: 'form-data',
-		            header: _('formsave.form_data_intro') 
-		        },
-		    	{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'time',
-		            width: 50,
-		            header: _('formsave.form_time'),
-		            renderer: function(value) {
-		            	var formDate = Date.parseDate(value, 'U');
-		            	return formDate.format('Y/m/d H:i');
-		            }
-		        }
-		    ], 
-		    listeners: {
+					header: _('formsave.form_data_intro') 
+				},
+				{
+					xtype: 'gridcolumn',
+					dataIndex: 'time',
+					width: 50,
+					header: _('formsave.form_time'),
+					renderer: function(value) {
+						var formDate = Date.parseDate(value, 'U');
+						return formDate.format('Y/m/d H:i');
+					}
+				}
+			],
+			listeners: {
 				added: {
-		    		scope: this,
-		    		fn: function() {
-		        		this.formGrid.getStore().load();
+					scope: this,
+					fn: function() {
+						this.formGrid.getStore().load();
 						fsCore.stores.forms.load();
-		        	}
-		    	},
-		    	rowContextMenu: {
-			    	scope: this,
-		    		fn: function(grid, rowIndex, event) {
-		    			// Set the database ID in the menu's base params so we can access it when an action is performed
-		    			this.rowMenu.baseParams.rowId = fsCore.stores.forms.getAt(rowIndex).get('id');
-		    			this.rowMenu.showAt(event.xy);
-		    			event.stopEvent();
-		    		}
+					}
+				},
+				rowContextMenu: {
+					scope: this,
+					fn: function(grid, rowIndex, event) {
+						// Set the database ID in the menu's base params so we can access it when an action is performed
+						this.rowMenu.baseParams.rowId = fsCore.stores.forms.getAt(rowIndex).get('id');
+						this.rowMenu.showAt(event.xy);
+						event.stopEvent();
+					}
 				},
 				render: {
 					scope: this,
@@ -180,7 +180,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 					id: 'form-data-view',
 					plain: true,
 					border: false,
-					html: ''	
+					html: ''
 				}
 			],
 			bbar: [
@@ -346,7 +346,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 								}
 							]
 						}
-					]			
+					]
 				},
 				this.formGrid
 			]
