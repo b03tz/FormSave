@@ -207,13 +207,64 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 			padding: 15,
 			border: false,
 			items: [
+				// Search form
 				{
 					xtype: 'form',
 					border: false,
 					labelWidth: 175,
 					style: {
+						paddingTop: '10px',
+						paddingLeft: '10px',
+						paddingBottom: '10px',
 						marginBottom: '15px'
 					},
+					// @todo Fix this to use _()
+					title: 'Search',
+					bbar: [
+						{
+							xtype: 'label',
+							html: '<div style="width: 177px;">&nbsp;</div>'
+						},
+						{
+							xtype: 'button',
+							// @todo Fix this to use _()
+							text: 'Go',
+							scope: this,
+							handler: function() {
+								var term = Ext.getCmp('search').getValue().toLowerCase();
+								fsCore.stores.forms.filterBy(function(obj) {
+									for (key in obj.data.data) {
+										if (obj.data.data[key].toLowerCase().indexOf(term) != -1) return true;
+									}
+									return false;
+								});
+							}
+						}
+					],
+					items: [
+						{
+							xtype: 'textfield',
+							displayField: 'search',
+							// @todo Fix this to use _()
+							fieldLabel: 'Search all fields',
+							name: 'search',
+							id: 'search'
+						}
+					]
+				},
+				// Export form
+				{
+					xtype: 'form',
+					border: false,
+					labelWidth: 175,
+					style: {
+						paddingTop: '10px',
+						paddingLeft: '10px',
+						paddingBottom: '10px',
+						marginBottom: '15px'
+					},
+					// @todo Fix this to use _()
+					title: 'Export',
 					bbar: [
 						{
 							xtype: 'label',
