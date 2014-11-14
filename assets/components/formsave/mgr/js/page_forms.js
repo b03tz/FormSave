@@ -203,7 +203,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 			
 		// The mainpanel always has to be in the "this.mainPanel" variable
 		this.mainPanel = new Ext.Panel({
-			renderTo: 'formsave-content',
+			renderTo: 'formsave-mainpanel',
 			padding: 15,
 			border: false,
 			items: [

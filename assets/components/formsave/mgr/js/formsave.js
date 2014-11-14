@@ -40,35 +40,42 @@ Ext.extend(FormSave, Ext.Component, {
 		
 		this.config.disableMask = false;
 		
-		Ext.onReady(function() {
-			if (Ext.get('formsave-container')) {
-				this.mainPanel = new Ext.Panel({
-					renderTo: 'modx-panel-holder',
-					border: false,
-					autoHeight: true,
-					unstyled: true,
-					padding: 0,
-					margin: 0,
-					baseCls: 'fs-mainpanel',
-					items: [
-						{	
-							html: '<h2 id="formsave-title"></h2>',
-							border: false,
-							cls: 'modx-page-header'	
-						},
-						{
-							id: 'formsave-content',
-							border: false,
-							padding: '0px',
-							margin: '0px',
-							baseCls: 'formsave-content',
-							plain: true,
-							unstyled: true
-						}
-					]
-				});
-			}
-		}, this);
+        Ext.onReady(function() {
+            if (Ext.get('formsave-container')) {
+                this.mainPanel = new MODx.Panel({
+                    renderTo: 'formsave-container',
+                    id: 'formsave-wrapper',
+                    
+                    // This panel will provide the scrolling for the search & export forms,
+                    // and the grid itself.
+                    // @todo Whould hook this into a resize event, so it works after a browser resize.
+                    height: document.body.clientHeight - 60, // 60 is the height of the top toolbar
+                    autoScroll: true,
+
+                    items: [
+                        {   
+                            html: '<h2 id="formsave-title"></h2>',
+                            border: false,
+                            cls: 'modx-page-header' 
+                        },
+                        {
+                            xtype: 'modx-tabs'
+                            ,defaults: { border: false, autoHeight: true }
+                            ,border: true
+                            ,items: [{
+                                // @todo Fix this by replacing it with a _() call
+                                title: 'Stored Forms',
+                                defaults: { autoHeight: true },
+                                items: [{
+                                    xtype: 'modx-panel',
+                                    id: 'formsave-mainpanel'
+                                }]
+                            }],
+                        }
+                    ]
+                });
+            }
+        }, this);
 		
 		this.ajax = new Ext.data.Connection({
 			disableCaching: true,
