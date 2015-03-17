@@ -22,8 +22,8 @@
  */
 
 var FormSave = function(config) {
-    config = config || {};
-    FormSave.superclass.constructor.call(this,config);
+	config = config || {};
+	FormSave.superclass.constructor.call(this,config);
 };
 
 Ext.extend(FormSave, Ext.Component, {
@@ -42,28 +42,35 @@ Ext.extend(FormSave, Ext.Component, {
 		
 		Ext.onReady(function() {
 			if (Ext.get('formsave-container')) {
-				this.mainPanel = new Ext.Panel({
-					renderTo: 'modx-panel-holder',
-					border: false,
-					autoHeight: true,
-					unstyled: true,
-					padding: 0,
-					margin: 0,
-					baseCls: 'fs-mainpanel',
+				this.mainPanel = new MODx.Panel({
+					renderTo: 'formsave-container',
+					id: 'formsave-wrapper',
+					
+					// This panel will provide the scrolling for the search & export forms,
+					// and the grid itself.
+					// @todo Whould hook this into a resize event, so it works after a browser resize.
+					height: document.body.clientHeight - 60, // 60 is the height of the top toolbar
+					autoScroll: true,
+
 					items: [
-						{	
+						{   
 							html: '<h2 id="formsave-title"></h2>',
 							border: false,
-							cls: 'modx-page-header'	
+							cls: 'modx-page-header' 
 						},
 						{
-							id: 'formsave-content',
-							border: false,
-							padding: '0px',
-							margin: '0px',
-							baseCls: 'formsave-content',
-							plain: true,
-							unstyled: true
+							xtype: 'modx-tabs'
+							,defaults: { border: false, autoHeight: true }
+							,border: true
+							,items: [{
+								// @todo Fix this by replacing it with a _() call
+								title: 'Stored Forms',
+								defaults: { autoHeight: true },
+								items: [{
+									xtype: 'modx-panel',
+									id: 'formsave-mainpanel'
+								}]
+							}],
 						}
 					]
 				});
@@ -219,17 +226,17 @@ Ext.extend(FormSave, Ext.Component, {
 	},
 	getUrlVar: function(key) {
 		// Thanks to: http://snipplr.com/users/Roshambo/
-	    var vars = [], hash;
-	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	    for(var i = 0; i < hashes.length; i++)
-	    {
-	        hash = hashes[i].split('=');
-	        if (hash[0] == key) {
-	        	return hash[1];	 
-	        }
-	    }
-	    
-	    return '';
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			if (hash[0] == key) {
+				return hash[1];  
+			}
+		}
+		
+		return '';
 	},
 	createAlias: function(string) {
 		string = string.toLowerCase();
@@ -239,20 +246,20 @@ Ext.extend(FormSave, Ext.Component, {
 			if (allowed.indexOf(string[i]) != -1) {
 				output += string[i];
 			} else {
-				output += '-';	
+				output += '-';  
 			}
-		}	
+		}   
 		
 		while(output.indexOf('--') != -1) {
-			output = output.replace(/--/gi, '-', output);	
+			output = output.replace(/--/gi, '-', output);   
 		}
 		
 		if (output.substr(0, 1) == '-') {
-			output = output.substr(1);	
+			output = output.substr(1);  
 		}
 		
 		if (output.substr(-1) == '-') {
-			output = output.substr(0, (output.length)-1);	
+			output = output.substr(0, (output.length)-1);   
 		}
 		
 		return output;
@@ -260,29 +267,29 @@ Ext.extend(FormSave, Ext.Component, {
 });
 
 function getDocHeight() {
-    var D = document;
-    return Math.max(
-        D.body.clientHeight,
-        window.innerHeight,
-        document.documentElement.clientHeight
-    );
+	var D = document;
+	return Math.max(
+		D.body.clientHeight,
+		window.innerHeight,
+		document.documentElement.clientHeight
+	);
 }
 
 function getWindowScrollSize() {
-    var D = document;
-    var y = Math.max(
-        Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
-        Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
-        Math.max(D.body.clientHeight, D.documentElement.clientHeight)
-    );
-    
-    var x = Math.max(
-        Math.max(D.body.scrollWidth, D.documentElement.scrollWidth),
-        Math.max(D.body.offsetWidth, D.documentElement.offsetWidth),
-        Math.max(D.body.clientWidth, D.documentElement.clientWidth)
-    );
-    
-    return {x: x, y: y};
+	var D = document;
+	var y = Math.max(
+		Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+		Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+		Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+	);
+	
+	var x = Math.max(
+		Math.max(D.body.scrollWidth, D.documentElement.scrollWidth),
+		Math.max(D.body.offsetWidth, D.documentElement.offsetWidth),
+		Math.max(D.body.clientWidth, D.documentElement.clientWidth)
+	);
+	
+	return {x: x, y: y};
 }
 
 var fsCore = new FormSave();

@@ -22,7 +22,7 @@
  */
  
 var fsPageStores = Ext.extend(Ext.Panel, {
-	initComponent: function() {		
+	initComponent: function() {
 		// Rightclick mouse menu for the grid
 		this.rowMenu = new Ext.menu.Menu({
 			baseParams: {
@@ -47,9 +47,9 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 										Ext.getCmp('form-data-view').update(response.responseText);
 									}
 								});
-							}	
-						}	
-					} 
+							}
+						}
+					}
 				},
 				{
 					text: _('formsave.delete'),
@@ -79,13 +79,55 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 									icon: Ext.MessageBox.QUESTION,
 									scope: this
 								});
-							}	
-						}	
+							}
+						}
 					}
 				}
 			]
 		});
+
+        this.combo = new Ext.form.ComboBox({
+            name : 'perpage',
+            width: 40,
+            store: new Ext.data.ArrayStore({
+                fields: ['id'],
+                data  : [
+                    ['10'],
+                    ['25'],
+                    ['50'],
+                    ['100'],
+                    ['250'],
+                    ['500'],
+                    ['1000']
+               ]
+            }),
+            mode : 'local',
+            value: '15',
+            listWidth     : 40,
+            triggerAction : 'all',
+            displayField  : 'id',
+            valueField    : 'id',
+            editable      : false,
+            forceSelection: true
+        });
+
+        this.bbar = new Ext.PagingToolbar({
+			store: fsCore.stores.forms,
+			displayInfo: true,
+			pageSize: 250,
+			perpendButtons: true,
+            items: [
+                '-',
+                'Per Page: ',
+                this.combo
+            ]
+		});
 		
+        this.combo.on('select', function(combo, record) {
+            this.bbar.pageSize = parseInt(record.get('id'), 10);
+            this.bbar.doLoad(this.bbar.cursor);
+        }, this);
+
 		this.formGrid = new Ext.grid.GridPanel({
 			store: fsCore.stores.forms,
 			autoHeight: true,
@@ -102,60 +144,55 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 					singleSelect: true
 				})
 			},
-			bbar: new Ext.PagingToolbar({
-				store: fsCore.stores.forms,
-				displayInfo: true,
-				pageSize: 25,
-				perpendButtons: true
-			}),
+			bbar: this.bbar,
 			loadMask: true,
 			enableDragDrop: true,
-		    autoExpandColumn: 'form-data',
-		    columns: [
+			autoExpandColumn: 'form-data',
+			columns: [
 				{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'id',
-		            header: _('formsave.form_id'),
+					xtype: 'gridcolumn',
+					dataIndex: 'id',
+					header: _('formsave.form_id'),
 					width: 100
-		        },
+				},
 				{
-		            xtype: 'gridcolumn', 
-		            dataIndex: 'topic',
-		            header: _('formsave.form_topic')
-		        },
+					xtype: 'gridcolumn', 
+					dataIndex: 'topic',
+					header: _('formsave.form_topic')
+				},
 				{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'data_intro',
+					xtype: 'gridcolumn',
+					dataIndex: 'data_intro',
 					id: 'form-data',
-		            header: _('formsave.form_data_intro') 
-		        },
-		    	{
-		            xtype: 'gridcolumn',
-		            dataIndex: 'time',
-		            width: 50,
-		            header: _('formsave.form_time'),
-		            renderer: function(value) {
-		            	var formDate = Date.parseDate(value, 'U');
-		            	return formDate.format('Y/m/d H:i');
-		            }
-		        }
-		    ], 
-		    listeners: {
+					header: _('formsave.form_data_intro') 
+				},
+				{
+					xtype: 'gridcolumn',
+					dataIndex: 'time',
+					width: 50,
+					header: _('formsave.form_time'),
+					renderer: function(value) {
+						var formDate = Date.parseDate(value, 'U');
+						return formDate.format('Y/m/d H:i');
+					}
+				}
+			],
+			listeners: {
 				added: {
-		    		scope: this,
-		    		fn: function() {
-		        		this.formGrid.getStore().load();
+					scope: this,
+					fn: function() {
+						this.formGrid.getStore().load();
 						fsCore.stores.forms.load();
-		        	}
-		    	},
-		    	rowContextMenu: {
-			    	scope: this,
-		    		fn: function(grid, rowIndex, event) {
-		    			// Set the database ID in the menu's base params so we can access it when an action is performed
-		    			this.rowMenu.baseParams.rowId = fsCore.stores.forms.getAt(rowIndex).get('id');
-		    			this.rowMenu.showAt(event.xy);
-		    			event.stopEvent();
-		    		}
+					}
+				},
+				rowContextMenu: {
+					scope: this,
+					fn: function(grid, rowIndex, event) {
+						// Set the database ID in the menu's base params so we can access it when an action is performed
+						this.rowMenu.baseParams.rowId = fsCore.stores.forms.getAt(rowIndex).get('id');
+						this.rowMenu.showAt(event.xy);
+						event.stopEvent();
+					}
 				},
 				render: {
 					scope: this,
@@ -180,7 +217,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 					id: 'form-data-view',
 					plain: true,
 					border: false,
-					html: ''	
+					html: ''
 				}
 			],
 			bbar: [
@@ -203,17 +240,86 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 			
 		// The mainpanel always has to be in the "this.mainPanel" variable
 		this.mainPanel = new Ext.Panel({
-			renderTo: 'formsave-content',
+			renderTo: 'formsave-mainpanel',
 			padding: 15,
 			border: false,
 			items: [
+				// Search form
 				{
 					xtype: 'form',
 					border: false,
 					labelWidth: 175,
 					style: {
+						paddingTop: '10px',
+						paddingLeft: '10px',
+						paddingBottom: '10px',
 						marginBottom: '15px'
 					},
+					// @todo Fix this to use _()
+					title: 'Search',
+					bbar: [
+						{
+							xtype: 'label',
+							html: '<div style="width: 177px;">&nbsp;</div>'
+						},
+						{
+							xtype: 'button',
+							// @todo Fix this to use _()
+							text: 'Go',
+							scope: this,
+							handler: function() {
+								var term = Ext.getCmp('search').getValue().toLowerCase();
+								var id = Ext.getCmp('search_id').getValue().toLowerCase();
+
+								if (term.length > 0) {
+									fsCore.stores.forms.filterBy(function(obj) {
+										for (var key in obj.data.data) {
+											if (typeof obj.data.data[key] == "string" && obj.data.data[key].toLowerCase().indexOf(term) != -1) return true;
+										}
+										return false;
+									});
+								}
+								else if (id.length > 0) {
+									fsCore.stores.forms.filterBy(function(obj) {
+										if (obj.id == id) return true;
+										return false;
+									});
+								}
+							}
+						}
+					],
+					items: [
+						{
+							xtype: 'textfield',
+							displayField: 'search_id',
+							// @todo Fix this to use _()
+							fieldLabel: 'Show just this ID',
+							name: 'search_id',
+							id: 'search_id'
+						},
+						{
+							xtype: 'textfield',
+							displayField: 'search',
+							// @todo Fix this to use _()
+							fieldLabel: 'Search all fields',
+							name: 'search',
+							id: 'search'
+						}
+					]
+				},
+				// Export form
+				{
+					xtype: 'form',
+					border: false,
+					labelWidth: 175,
+					style: {
+						paddingTop: '10px',
+						paddingLeft: '10px',
+						paddingBottom: '10px',
+						marginBottom: '15px'
+					},
+					// @todo Fix this to use _()
+					title: 'Export',
 					bbar: [
 						{
 							xtype: 'label',
@@ -346,7 +452,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 								}
 							]
 						}
-					]			
+					]
 				},
 				this.formGrid
 			]
