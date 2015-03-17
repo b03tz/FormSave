@@ -6,7 +6,7 @@
   &m=`[[+time:date=`%m`]]`
   &y=`[[+time:date=`%Y`]]`
   &h=`[[+time:date=`%H`]]`
-  &m=`[[+time:date=`%M`]]`
+  &M=`[[+time:date=`%M`]]`
   &s=`[[+time:date=`%S`]]`
 ]]<br />
 <b>[[%formsave.published]]</b>: [[+published:eq=`1`:then=`[[%formsave.published_yes]]`:else=`[[%formsave.published_no]]`]]
