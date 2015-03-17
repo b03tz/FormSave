@@ -85,7 +85,49 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 				}
 			]
 		});
+
+        this.combo = new Ext.form.ComboBox({
+            name : 'perpage',
+            width: 40,
+            store: new Ext.data.ArrayStore({
+                fields: ['id'],
+                data  : [
+                    ['10'],
+                    ['25'],
+                    ['50'],
+                    ['100'],
+                    ['250'],
+                    ['500'],
+                    ['1000']
+               ]
+            }),
+            mode : 'local',
+            value: '15',
+            listWidth     : 40,
+            triggerAction : 'all',
+            displayField  : 'id',
+            valueField    : 'id',
+            editable      : false,
+            forceSelection: true
+        });
+
+        this.bbar = new Ext.PagingToolbar({
+			store: fsCore.stores.forms,
+			displayInfo: true,
+			pageSize: 250,
+			perpendButtons: true,
+            items: [
+                '-',
+                'Per Page: ',
+                this.combo
+            ]
+		});
 		
+        this.combo.on('select', function(combo, record) {
+            this.bbar.pageSize = parseInt(record.get('id'), 10);
+            this.bbar.doLoad(this.bbar.cursor);
+        }, this);
+
 		this.formGrid = new Ext.grid.GridPanel({
 			store: fsCore.stores.forms,
 			autoHeight: true,
@@ -102,12 +144,7 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 					singleSelect: true
 				})
 			},
-			bbar: new Ext.PagingToolbar({
-				store: fsCore.stores.forms,
-				displayInfo: true,
-				pageSize: 25,
-				perpendButtons: true
-			}),
+			bbar: this.bbar,
 			loadMask: true,
 			enableDragDrop: true,
 			autoExpandColumn: 'form-data',
@@ -232,16 +269,34 @@ var fsPageStores = Ext.extend(Ext.Panel, {
 							scope: this,
 							handler: function() {
 								var term = Ext.getCmp('search').getValue().toLowerCase();
-								fsCore.stores.forms.filterBy(function(obj) {
-									for (key in obj.data.data) {
-										if (obj.data.data[key].toLowerCase().indexOf(term) != -1) return true;
-									}
-									return false;
-								});
+								var id = Ext.getCmp('search_id').getValue().toLowerCase();
+
+								if (term.length > 0) {
+									fsCore.stores.forms.filterBy(function(obj) {
+										for (var key in obj.data.data) {
+											if (typeof obj.data.data[key] == "string" && obj.data.data[key].toLowerCase().indexOf(term) != -1) return true;
+										}
+										return false;
+									});
+								}
+								else if (id.length > 0) {
+									fsCore.stores.forms.filterBy(function(obj) {
+										if (obj.id == id) return true;
+										return false;
+									});
+								}
 							}
 						}
 					],
 					items: [
+						{
+							xtype: 'textfield',
+							displayField: 'search_id',
+							// @todo Fix this to use _()
+							fieldLabel: 'Show just this ID',
+							name: 'search_id',
+							id: 'search_id'
+						},
 						{
 							xtype: 'textfield',
 							displayField: 'search',
